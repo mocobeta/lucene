@@ -21,9 +21,6 @@ description = 'Dynamically computed values to sort/facet/search on based on a pl
 
 dependencies {
   moduleApi project(':lucene:core')
-  // NOCOMMIT
-  moduleApi project(':lucene:fake:asm-tree')
-  moduleApi project(':lucene:fake:asm-analysis')
 
   moduleImplementation project(':lucene:codecs')
 
@@ -35,6 +32,9 @@ dependencies {
     exclude group: "org.ow2.asm", module: "asm-tree"
     exclude group: "org.ow2.asm", module: "asm-analysis"
   })
+  // NOCOMMIT
+  moduleImplementation project(':lucene:fake:asm-tree')
+  moduleImplementation project(':lucene:fake:asm-analysis')
 
   testImplementation project(':lucene:test-framework')
 }
