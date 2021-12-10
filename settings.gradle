@@ -63,3 +63,7 @@ include "lucene:test-framework"
 include "lucene:documentation"
 include "lucene:distribution"
 include "lucene:distribution-tests"
+
+// NOCOMMIT
+include "lucene:fake:asm-tree"
+include "lucene:fake:asm-analysis"
