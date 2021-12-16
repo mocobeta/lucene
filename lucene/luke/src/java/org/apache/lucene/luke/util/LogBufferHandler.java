@@ -20,15 +20,12 @@ package org.apache.lucene.luke.util;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
-import java.util.stream.Stream;
 
 /** A {@link Handler} with a buffer of recent log messages. */
 public class LogBufferHandler extends Handler {
