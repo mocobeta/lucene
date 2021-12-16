@@ -30,19 +30,16 @@ import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 import java.util.stream.Stream;
 
-/** A {@link Handler} with a bounded buffer of recent log messages. */
-public class CircularLogBufferHandler extends Handler {
-  // Keep a bounded buffer of messages logged so far. We'll keep them
-  // preformatted, no need to complicate things.
-  private final ArrayDeque<String> buffer = new ArrayDeque<>();
+/** A {@link Handler} with a buffer of recent log messages. */
+public class LogBufferHandler extends Handler {
+  private String buffer = "";
 
-  private final List<Consumer<CircularLogBufferHandler>> listeners = new CopyOnWriteArrayList<>();
+  private final List<Consumer<LogBufferHandler>> listeners = new CopyOnWriteArrayList<>();
 
   @Override
   public void publish(LogRecord record) {
     synchronized (buffer) {
-      var formatted = format(record);
-      buffer.addLast(formatted);
+      buffer = format(record);
     }
 
     listeners.forEach(c -> c.accept(this));
@@ -79,13 +76,13 @@ public class CircularLogBufferHandler extends Handler {
     // Ignore.
   }
 
-  public Stream<String> getLogEntries() {
+  public String getLastLogEntry() {
     synchronized (buffer) {
-      return new ArrayList<>(buffer).stream();
+      return buffer;
     }
   }
 
-  public void addUpdateListener(Consumer<CircularLogBufferHandler> listener) {
+  public void addUpdateListener(Consumer<LogBufferHandler> listener) {
     listeners.add(listener);
   }
 }

@@ -22,20 +22,20 @@ import java.util.logging.Logger;
 
 /** Logger factory. This configures log interceptors for the GUI. */
 public class LoggerFactory {
-  public static CircularLogBufferHandler circularBuffer;
+  public static LogBufferHandler logBuffer;
 
   public static void initGuiLogging() {
-    if (circularBuffer != null) {
+    if (logBuffer != null) {
       throw new RuntimeException("Double-initialization?");
     }
 
-    circularBuffer = new CircularLogBufferHandler();
-    circularBuffer.setLevel(Level.FINEST);
+    logBuffer = new LogBufferHandler();
+    logBuffer.setLevel(Level.INFO);
 
     // Only capture events from Lucene logger hierarchy.
     var luceneRoot = Logger.getLogger("org.apache.lucene");
-    luceneRoot.setLevel(Level.FINEST);
-    luceneRoot.addHandler(circularBuffer);
+    luceneRoot.setLevel(Level.INFO);
+    luceneRoot.addHandler(logBuffer);
   }
 
   public static Logger getLogger(Class<?> clazz) {

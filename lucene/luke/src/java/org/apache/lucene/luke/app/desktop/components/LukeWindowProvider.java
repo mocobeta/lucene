@@ -27,7 +27,6 @@ import java.awt.GridLayout;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 import javax.swing.*;
 import org.apache.lucene.luke.app.DirectoryHandler;
 import org.apache.lucene.luke.app.DirectoryObserver;
@@ -40,7 +39,7 @@ import org.apache.lucene.luke.app.desktop.PreferencesFactory;
 import org.apache.lucene.luke.app.desktop.util.FontUtils;
 import org.apache.lucene.luke.app.desktop.util.ImageUtils;
 import org.apache.lucene.luke.app.desktop.util.MessageUtils;
-import org.apache.lucene.luke.util.CircularLogBufferHandler;
+import org.apache.lucene.luke.util.LogBufferHandler;
 import org.apache.lucene.luke.util.LoggerFactory;
 import org.apache.lucene.util.Version;
 
@@ -75,18 +74,20 @@ public final class LukeWindowProvider implements LukeWindowOperator {
     JTextArea logTextArea = new JTextArea();
     logTextArea.setEditable(false);
 
-    // Hook into live data from CircularLogBufferHandler and update initial state.
-    Consumer<CircularLogBufferHandler> updater =
-        circularBuffer -> {
-          String logContent = circularBuffer.getLogEntries().collect(Collectors.joining("\n"));
+    // Hook into live data from LogBufferHandler and update initial state.
+    Consumer<LogBufferHandler> updater =
+        logBuffer -> {
+          String logContent = logBuffer.getLastLogEntry();
           SwingUtilities.invokeLater(
               () -> {
-                logTextArea.setText(logContent);
+                if (logContent != null && !logContent.isBlank()) {
+                  logTextArea.append(logContent + "\n");
+                }
               });
         };
 
-    Objects.requireNonNull(LoggerFactory.circularBuffer).addUpdateListener(updater);
-    updater.accept(LoggerFactory.circularBuffer);
+    Objects.requireNonNull(LoggerFactory.logBuffer).addUpdateListener(updater);
+    updater.accept(LoggerFactory.logBuffer);
 
     this.prefs = PreferencesFactory.getInstance();
     this.menuBar = new MenuBarProvider().get();
