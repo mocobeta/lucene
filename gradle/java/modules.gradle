@@ -14,6 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import java.nio.file.Path
+import java.util.concurrent.Callable
 
 // Configure miscellaneous aspects required for supporting the java module system layer.
 
@@ -48,6 +50,20 @@ allprojects {
         ":lucene:test-framework",
       ]) {
         modularPaths.mode = ModularPathsExtension.Mode.CLASSPATH_ONLY
+      }
+
+      if (sourceSet.name == "test" && project.path == ":lucene:analysis:kuromoji") {
+        project.sourceSets.findAll {ss -> ss.name == "main"}.each { SourceSet mainSs ->
+          mainSs.java.srcDirs.each { File f ->
+            Provider<Path> p = project.provider(new Callable<Path>() {
+              @Override
+              Path call() throws Exception {
+                return f.toPath()
+              }
+            })
+            modularPaths.patchModule("org.apache.lucene.analysis.kuromoji", p)
+          }
+        }
       }
 
       // Configure the JavaCompile task associated with this source set.
