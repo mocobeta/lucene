@@ -55,8 +55,10 @@ public class TestScripts extends AbstractLuceneDistributionTest {
 
     Path lukeScript = resolveScript(distributionPath.resolve("bin").resolve("luke"));
 
+
     Launcher launcher =
-        WINDOWS ? new DetachedProcessBuilderLauncher() : new ProcessBuilderLauncher()
+        WINDOWS ? new DetachedProcessBuilderLauncher() : new ProcessBuilderLauncher();
+    launcher = launcher
             .executable(lukeScript)
             // pass the same JVM which the tests are currently using; this also forces UTF-8 as
             // console
