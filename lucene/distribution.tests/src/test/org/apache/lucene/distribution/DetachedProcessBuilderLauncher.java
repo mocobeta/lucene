@@ -120,25 +120,6 @@ public class DetachedProcessBuilderLauncher implements Launcher {
     }
   }
 
-  protected List<String> shellInvokeUnixish() {
-    Path cmd = Paths.get("/bin/sh");
-    if (!Files.isRegularFile(cmd)) {
-      throw new RuntimeException("sh interpreter couldn't be found: " + cmd);
-    }
-
-    List<String> command = new ArrayList<>();
-    command.addAll(
-      Arrays.asList(
-        cmd.toString(),
-        "-f", // don't glob.
-        "-c",
-        "'" + executableName() + "'" + " \"$@\"",
-        executable.getFileName().toString()));
-    command.addAll(args);
-
-    return command;
-  }
-
   protected List<String> shellInvokeWindows() {
     List<String> command = new ArrayList<>();
     Path cmd = null;
