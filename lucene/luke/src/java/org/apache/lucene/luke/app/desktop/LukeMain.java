@@ -112,10 +112,10 @@ public class LukeMain {
       Runtime.getRuntime().exit(1);
     }
 
-    //if (sanityCheck) {
+    if (sanityCheck) {
       // In sanity-check mode on non-headless displays, return success.
-    //  Logger.getGlobal().log(Level.SEVERE, "[Vader] Hello, Luke. We seem to be fine.");
-    //  Runtime.getRuntime().exit(0);
-    //}
+      Logger.getGlobal().log(Level.SEVERE, "[Vader] Hello, Luke. We seem to be fine.");
+      Runtime.getRuntime().exit(0);
+    }
   }
 }
