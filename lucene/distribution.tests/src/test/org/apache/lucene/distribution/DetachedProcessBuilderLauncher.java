@@ -173,13 +173,13 @@ public class DetachedProcessBuilderLauncher implements Launcher {
     //command.add("\"");
     command.add("\"" + executableName() + "\"");
 
-    if (args.isEmpty()) {
+    //if (args.isEmpty()) {
     //  command.add("\"");
-    } else {
-      command.addAll(args.subList(0, args.size() - 1));
+    //} else {
+    //  command.addAll(args.subList(0, args.size() - 1));
       //command.add(args.get(args.size() - 1) + "\"");
-      command.add(args.get(args.size() - 1));
-    }
+    //  command.add(args.get(args.size() - 1));
+    //}
 
     System.out.println(command);
 
