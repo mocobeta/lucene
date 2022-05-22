@@ -74,7 +74,7 @@ public class LukeMain {
 
     if (sanityCheck && GraphicsEnvironment.isHeadless()) {
       Logger.getGlobal().log(Level.SEVERE, "[Yoda] Hello, Luke. Can't do much in headless mode.");
-      Runtime.getRuntime().exit(1);
+      Runtime.getRuntime().exit(0);
     }
 
     String lookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
