@@ -38,4 +38,4 @@ jobs:
       run: ./gradlew localSettings
 
     - name: Run all distribution tests including GUI tests (${{ matrix.os }})
-      run: ./gradlew -p lucene/distribution.tests test
+      run: ./gradlew -p lucene/distribution.tests test -Ptests.iters=100
