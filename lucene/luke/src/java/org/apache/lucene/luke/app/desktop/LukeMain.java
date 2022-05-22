@@ -73,7 +73,7 @@ public class LukeMain {
     boolean sanityCheck = Arrays.asList(args).contains("--sanity-check");
 
     if (sanityCheck && GraphicsEnvironment.isHeadless()) {
-      Logger.getGlobal().log(Level.SEVERE, "[R2-D2] Hello, Luke. Can't do much in headless mode.");
+      Logger.getGlobal().log(Level.SEVERE, "[Anakin] Hello, Luke. Can't do much in headless mode.");
       Runtime.getRuntime().exit(0);
     }
 
