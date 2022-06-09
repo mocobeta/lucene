@@ -17,8 +17,10 @@
 package org.apache.lucene.search;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import org.apache.lucene.codecs.lucene90.Lucene90PostingsFormat;
@@ -529,6 +531,17 @@ public class PhraseQuery extends Query {
         // sort by increasing docFreq order
         if (slop == 0) {
           ArrayUtil.timSort(postingsFreqs);
+          if (positions.length > 2) {
+            // reverse the array while keeping the lead term of the phrase.
+            // this allows ExactPhraseMatcher to check the term positions from the last term of the phrase so that
+            // it possibly (or hopefully) skips unnecessary position checks for terms in the middle of the phrase.
+            int mid = (int) Math.ceil(postingsFreqs.length / 2.0);
+            for (int i = 1; i < mid; i++) {
+              var _tmp = postingsFreqs[i];
+              postingsFreqs[i] = postingsFreqs[postingsFreqs.length - i];
+              postingsFreqs[postingsFreqs.length - i] = _tmp;
+            }
+          }
           return new ExactPhraseMatcher(postingsFreqs, scoreMode, scorer, totalMatchCost);
         } else {
           return new SloppyPhraseMatcher(
